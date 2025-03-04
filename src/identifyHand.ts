@@ -18,7 +18,6 @@ const isStraight = (cards: Card[]): boolean => {
     sortedValues[3].numericValue === 5 &&
     sortedValues[4].numericValue === 14
   ) {
-    // Ace
     return true;
   }
 

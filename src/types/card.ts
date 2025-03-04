@@ -3,3 +3,5 @@ export type Card = {
   suit: string;
   numericValue: number;
 };
+
+export type Hand = Card[];
