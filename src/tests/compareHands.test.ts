@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { compareHands } from '../compareHands';
+import * as identifyHandModule from '../identifyHand';
 
 describe('Hand Comparison', () => {
   describe('Successful cases', () => {
@@ -87,6 +88,21 @@ describe('Hand Comparison', () => {
       const hand2 = ['AC', 'KS', 'QH', 'JD', '9S'];
       expect(compareHands(hand1, hand2)).toBe(0);
     });
+
+    it('should break ties in three of a kind by comparing kickers when three cards match', () => {
+      const higherThreeKicker = ['QH', 'QD', 'QS', 'KC', '5H'];
+      const lowerThreeKicker = ['QC', 'QH', 'QD', 'JC', '5H'];
+      expect(compareHands(higherThreeKicker, lowerThreeKicker)).toBe(1);
+
+      const higherLastKicker = ['QH', 'QD', 'QS', 'KC', '7H'];
+      const lowerLastKicker = ['QC', 'QH', 'QD', 'KC', '4H'];
+      expect(compareHands(higherLastKicker, lowerLastKicker)).toBe(1);
+
+      // Test equal kickers case - should return 0
+      const sameCards1 = ['QH', 'QD', 'QS', 'KC', '5H'];
+      const sameCards2 = ['QC', 'QH', 'QD', 'KS', '5D'];
+      expect(compareHands(sameCards1, sameCards2)).toBe(0);
+    });
   });
 
   describe('Edge Cases and Invalid Inputs', () => {
@@ -103,6 +119,40 @@ describe('Hand Comparison', () => {
       const hand2 = ['AH', 'KD', 'QS', 'JC']; // Only 4 cards
 
       expect(() => compareHands(hand1, hand2)).toThrow('Hand must contain exactly 5 cards');
+    });
+
+    it('should break ties in full houses by the pair value when trips are equal', () => {
+      const higherFullHouse = ['QH', 'QD', 'QS', 'AC', 'AH'];
+      const lowerFullHouse = ['QC', 'QH', 'QD', 'KC', 'KH'];
+      expect(compareHands(higherFullHouse, lowerFullHouse)).toBe(1);
+    });
+
+    it('should identify two royal flushes as tied', () => {
+      const royalFlushHearts = ['AH', 'KH', 'QH', 'JH', 'TH'];
+      const royalFlushSpades = ['AS', 'KS', 'QS', 'JS', 'TS'];
+
+      // This directly tests the "Royal Flush" case in compareEqualHandTypes
+      expect(compareHands(royalFlushHearts, royalFlushSpades)).toBe(0);
+
+      // Also test the reverse order to ensure consistent behavior
+      expect(compareHands(royalFlushSpades, royalFlushHearts)).toBe(0);
+    });
+
+    it('should handle unknown hand types with the default case', () => {
+      // This is an internal test to verify the default case in compareEqualHandTypes
+      // Mock the identifyHand function to return an unknown type
+      const spy = vi
+        .spyOn(identifyHandModule, 'identifyHand')
+        .mockImplementation(() => 'Unknown Type');
+
+      try {
+        const hand1 = ['AH', 'KD', 'QS', 'JC', '9H'];
+        const hand2 = ['AC', 'KS', 'QH', 'JD', '9S'];
+        expect(compareHands(hand1, hand2)).toBe(0);
+      } finally {
+        // Restore the original function
+        spy.mockRestore();
+      }
     });
   });
 });

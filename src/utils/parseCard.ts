@@ -1,6 +1,6 @@
 import type { Card } from '../types/card';
 import { cardValue } from './values';
-import { validSuits, validValues } from './validData';
+import { validValues } from './validData';
 
 export const parseCard = (cardStr: string): Card => {
   const cardRegex = /^([2-9TJQKA])([HCDS])$/;
@@ -11,11 +11,7 @@ export const parseCard = (cardStr: string): Card => {
     if (!validValues.includes(cardValue)) {
       throw new Error('Invalid card value');
     }
-    const cardSuit = cardStr.slice(-1);
-    if (!validSuits.includes(cardSuit)) {
-      throw new Error('Invalid card suit');
-    }
-    throw new Error('Invalid card format');
+    throw new Error('Invalid card suit');
   }
 
   const [, value, suit] = match;
