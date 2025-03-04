@@ -1,7 +1,7 @@
 import { identifyHand } from './identifyHand';
 import type { Card, Hand } from './types/card';
-import { ranksValue } from './utils/values';
 import { parseCard } from './utils/parseCard';
+import { ranksValue } from './utils/values';
 
 const groupByValue = (cards: Card[]): Record<number, Card[]> => {
   const groups: Record<number, Card[]> = {};

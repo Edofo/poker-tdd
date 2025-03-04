@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# For proper commit message validation, you'll need to install commitlint
+# Add these packages if you want to enforce conventional commit messages:
+# pnpm add -D @commitlint/config-conventional @commitlint/cli
+# 
+# Then uncomment the following line:
+npx --no -- commitlint --edit ${1} 

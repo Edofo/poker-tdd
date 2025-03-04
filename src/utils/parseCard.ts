@@ -1,6 +1,6 @@
 import type { Card } from '../types/card';
-import { cardValue } from './values';
 import { validValues } from './validData';
+import { cardValue } from './values';
 
 export const parseCard = (cardStr: string): Card => {
   const cardRegex = /^([2-9TJQKA])([HCDS])$/;
