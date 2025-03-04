@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareHands } from '../poker';
+import { compareHands } from '../compareHands';
 
 describe('Hand Comparison', () => {
   describe('Successful cases', () => {
