@@ -1,0 +1,29 @@
+{
+  "name": "poker-final",
+  "version": "1.0.0",
+  "description": "A TDD poker project using Vitest",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --apply .",
+    "ci": "biome ci ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@vitest/ui": "^3.0.7",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}
