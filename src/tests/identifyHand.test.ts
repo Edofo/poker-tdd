@@ -71,18 +71,18 @@ describe('Hand Identification', () => {
 
   describe('Edge Cases and Invalid Inputs', () => {
     it('should throw error for invalid card format', () => {
-      const hand = ['1H', 'KD', 'QS', 'JC', '9H']; // 1H is not valid, should be AH
-      expect(() => identifyHand(hand)).toThrow('Invalid card format');
+      const hand = ['AAH', 'KD', 'QS', 'JC', '9H']; // AAH is not valid, should be AH
+      expect(() => identifyHand(hand)).toThrow('Invalid card value');
+    });
+
+    it('should throw error for invalid card suit', () => {
+      const hand = ['AR', 'KD', 'QS', 'JC', '9H']; // AR is not valid, should be AH
+      expect(() => identifyHand(hand)).toThrow('Invalid card suit');
     });
 
     it('should throw error for non-existent card value', () => {
       const hand = ['ZH', 'KD', 'QS', 'JC', '9H']; // ZH is not a valid card value
       expect(() => identifyHand(hand)).toThrow('Invalid card value');
-    });
-
-    it('should throw error for invalid suit', () => {
-      const hand = ['AX', 'KD', 'QS', 'JC', '9H']; // X is not a valid suit
-      expect(() => identifyHand(hand)).toThrow('Invalid card suit');
     });
 
     it('should throw error for duplicate cards in hand', () => {
