@@ -1,75 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { identifyHand, compareHands } from './poker';
+import { compareHands } from '../poker';
 
-describe('Poker Hand Evaluator', () => {
-  describe('Hand Identification', () => {
-    it('should identify a royal flush', () => {
-      const hand = ['AH', 'KH', 'QH', 'JH', 'TH'];
-      expect(identifyHand(hand)).toBe('Royal Flush');
-    });
-
-    it('should identify a straight flush', () => {
-      const hand = ['9S', '8S', '7S', '6S', '5S'];
-      expect(identifyHand(hand)).toBe('Straight Flush');
-    });
-
-    it('should identify a low straight flush with Ace', () => {
-      const hand = ['5C', '4C', '3C', '2C', 'AC'];
-      expect(identifyHand(hand)).toBe('Straight Flush');
-    });
-
-    it('should identify four of a kind', () => {
-      const hand = ['7H', '7D', '7S', '7C', '9H'];
-      expect(identifyHand(hand)).toBe('Four of a Kind');
-    });
-
-    it('should identify a full house', () => {
-      const hand = ['TH', 'TD', 'TS', '4C', '4H'];
-      expect(identifyHand(hand)).toBe('Full House');
-    });
-
-    it('should identify a flush', () => {
-      const hand = ['AC', 'TC', '7C', '6C', '2C'];
-      expect(identifyHand(hand)).toBe('Flush');
-    });
-
-    it('should identify a straight', () => {
-      const hand = ['9H', '8C', '7S', '6D', '5H'];
-      expect(identifyHand(hand)).toBe('Straight');
-    });
-
-    it('should identify a high straight with Ace', () => {
-      const hand = ['AH', 'KD', 'QS', 'JC', 'TD'];
-      expect(identifyHand(hand)).toBe('Straight');
-    });
-
-    it('should identify a low straight with Ace', () => {
-      const hand = ['5H', '4D', '3S', '2C', 'AD'];
-      expect(identifyHand(hand)).toBe('Straight');
-    });
-
-    it('should identify three of a kind', () => {
-      const hand = ['8H', '8D', '8S', 'KC', '3D'];
-      expect(identifyHand(hand)).toBe('Three of a Kind');
-    });
-
-    it('should identify two pair', () => {
-      const hand = ['JH', 'JC', '4S', '4H', 'AD'];
-      expect(identifyHand(hand)).toBe('Two Pair');
-    });
-
-    it('should identify a pair', () => {    
-      const hand = ['TH', 'TC', 'KS', '4H', '3D'];
-      expect(identifyHand(hand)).toBe('Pair');
-    });
-
-    it('should identify high card', () => {
-      const hand = ['KH', 'QC', 'JS', '8D', '3H'];
-      expect(identifyHand(hand)).toBe('High Card');
-    });
-  });
-
-  describe('Hand Comparison', () => {
+describe('Hand Comparison', () => {
+  describe('Successful cases', () => {
     it('should determine that a higher hand type beats a lower one', () => {
       const royalFlush = ['AH', 'KH', 'QH', 'JH', 'TH'];
       const fourOfAKind = ['7H', '7D', '7S', '7C', '9H'];
@@ -155,4 +88,21 @@ describe('Poker Hand Evaluator', () => {
       expect(compareHands(hand1, hand2)).toBe(0);
     });
   });
-}); 
+
+  describe('Edge Cases and Invalid Inputs', () => {
+    it('should throw error for comparing invalid hands', () => {
+      const validHand = ['AH', 'KD', 'QS', 'JC', '9H'];
+      const invalidHand = ['AH', 'ZD', 'QS', 'JC', '9H']; // ZD is invalid
+
+      expect(() => compareHands(validHand, invalidHand)).toThrow('Invalid card value');
+      expect(() => compareHands(invalidHand, validHand)).toThrow('Invalid card value');
+    });
+
+    it('should throw error when comparing hands with different lengths', () => {
+      const hand1 = ['AH', 'KD', 'QS', 'JC', '9H'];
+      const hand2 = ['AH', 'KD', 'QS', 'JC']; // Only 4 cards
+
+      expect(() => compareHands(hand1, hand2)).toThrow('Hand must contain exactly 5 cards');
+    });
+  });
+});
